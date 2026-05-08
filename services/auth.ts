@@ -83,3 +83,9 @@ export const getRecentWithdrawals = async (page: number, page_size: number) => {
     method: "GET",
   });
 };
+
+export const getLeaderboard = async () => {
+  return api("/api/laundry/leaderboard", {
+    method: "GET",
+  });
+};
