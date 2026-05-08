@@ -24,8 +24,8 @@ export default function Home() {
             <a href="#pricing" className="hover:text-yellow-500">
               Pricing
             </a>
-            <a href="#contact" className="hover:text-yellow-500">
-              Contact
+            <a href="/leaderboard" className="hover:text-yellow-500">
+              leaderboard
             </a>
           </div>
 
