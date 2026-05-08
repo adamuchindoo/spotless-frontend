@@ -18,8 +18,9 @@ export default function DashboardLayout({
 
         <div className="flex gap-4 text-black font-medium">
           <Link href="/dashboard">Home</Link>
-          <Link href="/dashboard/withdraw">Withdraw</Link>
+          <Link href="/leaderboard">leaderboard</Link>
           <Link href="/dashboard/orders">Orders</Link>
+          <Link href="/dashboard/withdraw">Withdraw</Link>
         </div>
       </div>
 
