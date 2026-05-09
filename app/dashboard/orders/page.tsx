@@ -23,6 +23,7 @@ type LaundryOrder = {
   stage: string;
   payment_status: string;
   status: string;
+  created_at: string;
   items: LaundryItem[];
 };
 
@@ -163,11 +164,9 @@ export default function OrdersPage() {
                   <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                     {/* LEFT */}
                     <div>
-                      <h2 className="text-xl font-bold text-black">
-                        {order.full_name}
-                      </h2>
+                      <h2 className="text-xl font-bold text-black">Date</h2>
 
-                      <p className="text-gray-600">{order.phone_number}</p>
+                      <p className="text-gray-600">{order.created_at}</p>
                     </div>
 
                     {/* RIGHT */}
@@ -254,12 +253,14 @@ export default function OrdersPage() {
                     </div>
 
                     {/* BUTTON */}
-                    <button
-                      onClick={() => updateOrder(order.order_id)}
-                      className="mt-6 bg-black text-white px-6 py-3 rounded-2xl hover:opacity-90 transition font-semibold"
-                    >
-                      Update Order
-                    </button>
+                    {order.stage === "review" && (
+                      <button
+                        onClick={() => updateOrder(order.order_id)}
+                        className="mt-6 bg-black text-white px-6 py-3 rounded-2xl hover:opacity-90 transition font-semibold"
+                      >
+                        Update Order
+                      </button>
+                    )}
                   </div>
                 )}
               </div>
