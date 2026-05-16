@@ -27,7 +27,8 @@ export const api = async (endpoint: string, options?: RequestInit) => {
 
   // ✅ HANDLE OTHER ERRORS
   if (!response.ok) {
-    throw new Error(data.message || data.detail || "Something went wrong");
+    throw data;
+    //throw new Error(data.message || data.detail || "Something went wrong");
   }
 
   return data;

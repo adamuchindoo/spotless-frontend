@@ -89,3 +89,9 @@ export const getLeaderboard = async () => {
     method: "GET",
   });
 };
+
+export const getGarments = async (page: number = 1, pageSize: number = 10) => {
+  return api(`/api/laundry/get-garment/${page}/${pageSize}`, {
+    method: "GET",
+  });
+};

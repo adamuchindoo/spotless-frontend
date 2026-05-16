@@ -30,6 +30,20 @@ export default function RegisterForm() {
     referral_code: "",
   });
 
+  /* ================= PASSWORD VALIDATION ================= */
+
+  const passwordRules = {
+    minLength: formData.password.length >= 8,
+    uppercase: /[A-Z]/.test(formData.password),
+    lowercase: /[a-z]/.test(formData.password),
+    number: /[0-9]/.test(formData.password),
+    special: /[^A-Za-z0-9]/.test(formData.password),
+  };
+
+  const isPasswordValid = Object.values(passwordRules).every(Boolean);
+
+  const strength = Object.values(passwordRules).filter(Boolean).length;
+
   /* ================= AUTO FILL REF ================= */
 
   useEffect(() => {
@@ -57,6 +71,11 @@ export default function RegisterForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!isPasswordValid) {
+      toast.error("Password does not meet requirements");
+      return;
+    }
+
     if (formData.password !== formData.confirm_password) {
       toast.error("Passwords do not match");
       return;
@@ -71,7 +90,14 @@ export default function RegisterForm() {
 
       router.push("/verify-otp");
     } catch (error: any) {
-      toast.error(error.message || "Registration failed");
+      // FASTAPI/Pydantic validation errors
+      if (Array.isArray(error?.detail)) {
+        error.detail.forEach((err: any) => {
+          toast.error(err.msg);
+        });
+      } else {
+        toast.error(error?.message || "Registration failed");
+      }
     } finally {
       setLoading(false);
     }
@@ -188,6 +214,62 @@ export default function RegisterForm() {
             />
           </div>
 
+          {/* PASSWORD REQUIREMENTS */}
+          <div className="text-sm space-y-1 mt-2 ml-1">
+            <p
+              className={
+                passwordRules.minLength ? "text-green-600" : "text-red-500"
+              }
+            >
+              • At least 8 characters
+            </p>
+
+            <p
+              className={
+                passwordRules.uppercase ? "text-green-600" : "text-red-500"
+              }
+            >
+              • One uppercase letter
+            </p>
+
+            <p
+              className={
+                passwordRules.lowercase ? "text-green-600" : "text-red-500"
+              }
+            >
+              • One lowercase letter
+            </p>
+
+            <p
+              className={
+                passwordRules.number ? "text-green-600" : "text-red-500"
+              }
+            >
+              • One number
+            </p>
+
+            <p
+              className={
+                passwordRules.special ? "text-green-600" : "text-red-500"
+              }
+            >
+              • One special character
+            </p>
+
+            {/* STRENGTH BAR */}
+            <div className="w-full bg-gray-200 h-2 rounded-full mt-3">
+              <div
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  strength <= 2
+                    ? "bg-red-500 w-1/3"
+                    : strength <= 4
+                      ? "bg-yellow-500 w-2/3"
+                      : "bg-green-500 w-full"
+                }`}
+              />
+            </div>
+          </div>
+
           {/* CONFIRM PASSWORD */}
           <div className="relative">
             <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
@@ -207,7 +289,7 @@ export default function RegisterForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-black text-white py-3 rounded-2xl font-semibold hover:opacity-90 transition"
+            className="w-full bg-black text-white py-3 rounded-2xl font-semibold hover:opacity-90 transition disabled:opacity-50"
           >
             {loading ? "Creating Account..." : "Create Account"}
           </button>

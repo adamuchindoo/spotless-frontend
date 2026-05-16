@@ -1,12 +1,28 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { getGarments } from "@/services/auth";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const router = useRouter();
+  const [garments, setGarments] = useState<any[]>([]);
+
+  const fetchGarments = async () => {
+    try {
+      const response = await getGarments(1, 100);
+      setGarments(response.data || []);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchGarments();
+  }, []);
 
   return (
-    <main className="min-h-screen bg-yellow-400 text-gray-900">
+    <main className="min-h-screen bg-yellow-400 text-gray-900 scroll-smooth">
       {/* Navbar */}
       <nav className="w-full bg-white shadow-md sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -18,14 +34,16 @@ export default function Home() {
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-6 font-medium">
-            <a href="#features" className="hover:text-yellow-500">
-              Features
+            <a href="#referral" className="hover:text-yellow-500">
+              Referral Bonus
             </a>
+
             <a href="#pricing" className="hover:text-yellow-500">
               Pricing
             </a>
+
             <a href="/leaderboard" className="hover:text-yellow-500">
-              leaderboard
+              Leaderboard
             </a>
           </div>
 
@@ -51,12 +69,14 @@ export default function Home() {
 
         {/* Mobile Menu */}
         <div id="mobile-menu" className="hidden md:hidden px-6 pb-4 space-y-3">
-          <a href="#features" className="block">
-            Features
+          <a href="#referral" className="block">
+            Referral Bonus
           </a>
+
           <a href="#pricing" className="block">
             Pricing
           </a>
+
           <a href="#contact" className="block">
             Contact
           </a>
@@ -99,6 +119,28 @@ export default function Home() {
         </button>
       </section>
 
+      {/* Referral */}
+      <section id="referral" className="py-16 bg-yellow-300 text-center">
+        <div className="max-w-4xl mx-auto px-6">
+          <h2 className="text-3xl font-bold mb-4">🎁 Referral Bonus</h2>
+
+          <p className="text-lg mb-6">
+            Earn 1% commission on every laundry order your referrals make.
+          </p>
+
+          <div className="bg-white p-6 rounded-2xl shadow">
+            <p className="mb-4">Share your link and earn unlimited income.</p>
+
+            <button
+              onClick={() => router.push("/register")}
+              className="bg-black text-white px-6 py-3 rounded-2xl"
+            >
+              Refer a Friend
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section className="bg-white py-16">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8">
@@ -125,21 +167,34 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section className="py-16 text-center">
+      <section id="pricing" className="py-16 text-center">
         <h2 className="text-3xl font-bold mb-8">Pricing</h2>
 
         <div className="flex flex-col md:flex-row justify-center items-center gap-6">
+          {/* Pay Per Wash */}
           <div className="bg-white p-8 rounded-2xl shadow w-full max-w-sm">
             <h3 className="font-bold text-xl mb-4">Pay Per Wash</h3>
+
             <p className="mb-4">Flexible option</p>
-            <button className="bg-black text-white px-4 py-2 rounded-xl">
+
+            <button
+              onClick={() =>
+                document
+                  .getElementById("pay-per-wash")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="bg-black text-white px-4 py-2 rounded-xl"
+            >
               Choose
             </button>
           </div>
 
+          {/* Unlimited Plan */}
           <div className="bg-black text-white p-8 rounded-2xl shadow w-full max-w-sm">
             <h3 className="font-bold text-xl mb-4">Unlimited Plan</h3>
+
             <p className="text-2xl font-bold mb-4">₦92,000 / semester</p>
+
             <button className="bg-yellow-400 text-black px-4 py-2 rounded-xl">
               Subscribe
             </button>
@@ -148,59 +203,29 @@ export default function Home() {
       </section>
 
       {/* Pay Per Wash */}
-      <section className="bg-white py-16">
+      <section id="pay-per-wash" className="bg-white py-16">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-3xl font-bold mb-8 text-center">
             Pay Per Wash Pricing
           </h2>
 
           <div className="space-y-4">
-            {[
-              ["Colored: Pair of Socks", "₦100"],
-              ["Colored: Underwear", "₦150"],
-              ["Whites: Pair of Socks", "₦200"],
-              ["Whites: Underwear", "₦350"],
-              ["Head Pieces", "₦150"],
-              ["Shirt or Trouser", "₦150"],
-              ["Jackets & Hoodies", "₦350"],
-              ["Special Instructions", "₦1,000"],
-            ].map((item, index) => (
+            {garments.map((item, index) => (
               <div
                 key={index}
                 className="flex justify-between bg-yellow-100 p-4 rounded-xl"
               >
-                <span>{item[0]}</span>
-                <span className="font-bold">{item[1]}</span>
+                <span>{item.name}</span>
+
+                <span className="font-bold">&#8358;{item.price}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Referral */}
-      <section className="py-16 bg-yellow-300 text-center">
-        <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-4">🎁 Referral Bonus</h2>
-
-          <p className="text-lg mb-6">
-            Earn 1% commission on every laundry order your referrals make.
-          </p>
-
-          <div className="bg-white p-6 rounded-2xl shadow">
-            <p className="mb-4">Share your link and earn unlimited income.</p>
-
-            <button
-              onClick={() => router.push("/register")}
-              className="bg-black text-white px-6 py-3 rounded-2xl"
-            >
-              Refer a Friend
-            </button>
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
-      <section className="bg-white py-16 text-center">
+      <section id="contact" className="bg-white py-16 text-center">
         <h2 className="text-3xl font-bold mb-4">Could be you today!</h2>
 
         <p className="mb-6">Join students enjoying stress-free laundry.</p>

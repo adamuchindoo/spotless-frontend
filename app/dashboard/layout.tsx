@@ -28,21 +28,24 @@ export default function DashboardLayout({
           {/* LOGO */}
           <div className="flex items-center gap-3">
             <img src="/logo.PNG" alt="Logo" className="w-10 h-10 rounded-xl" />
-
-            <h1 className="font-bold text-black text-lg">Spotless Dashboard</h1>
-          </div>
-
-          {/* DESKTOP MENU */}
-          <div className="hidden md:flex gap-6 text-black font-medium items-center">
             <Link
               href="/dashboard"
               className="hover:text-yellow-600 transition"
             >
+              <h1 className="font-bold text-black text-lg">
+                Spotless Dashboard
+              </h1>
+            </Link>
+          </div>
+
+          {/* DESKTOP MENU */}
+          <div className="hidden md:flex gap-6 text-black font-medium items-center">
+            <Link href="/" className="hover:text-yellow-600 transition">
               Home
             </Link>
 
             <Link
-              href="/leaderboard"
+              href="/dashboard/leaderboard"
               className="hover:text-yellow-600 transition"
             >
               Leaderboard
@@ -86,7 +89,7 @@ export default function DashboardLayout({
               </Link>
 
               <Link
-                href="/leaderboard"
+                href="/dashboard/leaderboard"
                 onClick={() => setOpenMenu(false)}
                 className="flex items-center gap-3 text-black font-medium hover:bg-white p-3 rounded-xl transition"
               >
