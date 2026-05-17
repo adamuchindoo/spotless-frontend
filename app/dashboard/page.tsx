@@ -62,7 +62,7 @@ export default function DashboardHome() {
       <div className="bg-black text-white rounded-3xl p-8 overflow-hidden relative">
         <div className="max-w-2xl">
           <h1 className="text-4xl font-bold mb-4">
-            Welcome to Spotless Dashboard
+            Welcome to your Spotless Care Dashboard
           </h1>
 
           <p className="text-gray-300 text-lg mb-6">
@@ -77,11 +77,6 @@ export default function DashboardHome() {
         </div>
 
         {/* LOGO */}
-        <img
-          src="/logo.PNG"
-          alt="Logo"
-          className="absolute right-6 bottom-6 w-28 opacity-20"
-        />
       </div>
 
       {/* STATS */}

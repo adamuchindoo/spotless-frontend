@@ -29,7 +29,9 @@ export default function Home() {
           {/* Logo */}
           <div className="flex items-center gap-3">
             <img src="/logo.PNG" alt="Spotless Logo" width={40} height={40} />
-            <span className="font-bold text-lg">Spotless</span>
+            <span className="font-semibold text-lg tracking-wide">
+              SPOTLESS CARE LIMITED
+            </span>
           </div>
 
           {/* Desktop Links */}
@@ -193,7 +195,7 @@ export default function Home() {
           <div className="bg-black text-white p-8 rounded-2xl shadow w-full max-w-sm">
             <h3 className="font-bold text-xl mb-4">Unlimited Plan</h3>
 
-            <p className="text-2xl font-bold mb-4">₦92,000 / semester</p>
+            <p className="text-2xl font-bold mb-4">₦119,000 / semester</p>
 
             <button className="bg-yellow-400 text-black px-4 py-2 rounded-xl">
               Subscribe

@@ -33,7 +33,7 @@ export default function DashboardLayout({
               className="hover:text-yellow-600 transition"
             >
               <h1 className="font-bold text-black text-lg">
-                Spotless Dashboard
+                SPOTLESS CARE DASHBOARD
               </h1>
             </Link>
           </div>

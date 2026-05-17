@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { ChevronDown } from "lucide-react";
 
 import { getLaundryOrders, updateLaundryOrder } from "@/services/auth";
 
@@ -28,27 +29,15 @@ type LaundryOrder = {
 };
 
 export default function OrdersPage() {
-  /* ================= STATES ================= */
-
   const [orders, setOrders] = useState<LaundryOrder[]>([]);
-
   const [loading, setLoading] = useState(false);
-
   const [openOrder, setOpenOrder] = useState<number | null>(null);
 
-  /* ================= PAGINATION ================= */
-
   const [page, setPage] = useState(1);
-
   const [pageSize] = useState(5);
-
   const [totalPages, setTotalPages] = useState(1);
-
   const [hasNext, setHasNext] = useState(false);
-
   const [hasPrevious, setHasPrevious] = useState(false);
-
-  /* ================= FETCH ================= */
 
   useEffect(() => {
     fetchOrders(page);
@@ -61,11 +50,8 @@ export default function OrdersPage() {
       const res = await getLaundryOrders(currentPage, pageSize);
 
       setOrders(res.data);
-
       setTotalPages(res.num_pages);
-
       setHasNext(res.has_next);
-
       setHasPrevious(res.has_previous);
     } catch (err: any) {
       toast.error(err.message || "Failed to fetch orders");
@@ -74,45 +60,27 @@ export default function OrdersPage() {
     }
   };
 
-  /* ================= UPDATE ================= */
-
   const updateOrder = async (id: number) => {
     try {
       await updateLaundryOrder(id);
-
       toast.success("Order updated");
-
       fetchOrders(page);
     } catch (err: any) {
       toast.error(err.message || "Failed to update order");
     }
   };
 
-  /* ================= TOGGLE ================= */
-
   const toggleOrder = (id: number) => {
-    if (openOrder === id) {
-      setOpenOrder(null);
-    } else {
-      setOpenOrder(id);
-    }
+    setOpenOrder((prev) => (prev === id ? null : id));
   };
 
-  /* ================= PAGINATION ================= */
-
   const nextPage = () => {
-    if (hasNext) {
-      setPage((prev) => prev + 1);
-    }
+    if (hasNext) setPage((prev) => prev + 1);
   };
 
   const prevPage = () => {
-    if (hasPrevious) {
-      setPage((prev) => prev - 1);
-    }
+    if (hasPrevious) setPage((prev) => prev - 1);
   };
-
-  /* ================= UI ================= */
 
   return (
     <main className="min-h-screen bg-yellow-400 p-4 md:p-8">
@@ -129,7 +97,6 @@ export default function OrdersPage() {
 
           <div>
             <h1 className="text-3xl font-bold text-black">Laundry Orders</h1>
-
             <p className="text-gray-600">Manage and track all laundry orders</p>
           </div>
         </div>
@@ -151,26 +118,25 @@ export default function OrdersPage() {
           </div>
         ) : (
           <div className="space-y-5">
-            {orders.map((order, orderIndex) => (
+            {orders.map((order) => (
               <div
-                key={`${order.order_id}-${orderIndex}`}
+                key={order.order_id}
                 className="bg-white rounded-3xl shadow-lg overflow-hidden"
               >
                 {/* ORDER HEADER */}
-                <div
+                <button
                   onClick={() => toggleOrder(order.order_id)}
-                  className="cursor-pointer p-6 hover:bg-gray-50 transition"
+                  className="w-full text-left p-6 hover:bg-gray-50 transition"
                 >
                   <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                     {/* LEFT */}
                     <div>
                       <h2 className="text-xl font-bold text-black">Date</h2>
-
                       <p className="text-gray-600">{order.created_at}</p>
                     </div>
 
                     {/* RIGHT */}
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-wrap items-center gap-3">
                       <div className="bg-yellow-200 text-black px-4 py-2 rounded-2xl text-sm font-semibold">
                         ₦{order.total_cost}
                       </div>
@@ -186,9 +152,17 @@ export default function OrdersPage() {
                       <div className="bg-red-100 text-red-700 px-4 py-2 rounded-2xl text-sm capitalize">
                         {order.status}
                       </div>
+
+                      {/* EXPAND ICON */}
+                      <ChevronDown
+                        size={22}
+                        className={`text-black transition-transform duration-300 ${
+                          openOrder === order.order_id ? "rotate-180" : ""
+                        }`}
+                      />
                     </div>
                   </div>
-                </div>
+                </button>
 
                 {/* EXPANDED SECTION */}
                 {openOrder === order.order_id && (
@@ -199,7 +173,6 @@ export default function OrdersPage() {
                         <p className="text-gray-500 text-sm mb-1">
                           Order Stage
                         </p>
-
                         <p className="text-black font-bold capitalize">
                           {order.stage}
                         </p>
@@ -209,7 +182,6 @@ export default function OrdersPage() {
                         <p className="text-gray-500 text-sm mb-1">
                           Reward Point
                         </p>
-
                         <p className="text-black font-bold">
                           {order.point || "N/A"}
                         </p>
@@ -223,16 +195,15 @@ export default function OrdersPage() {
                       </h3>
 
                       <div className="space-y-3">
-                        {order.items?.map((item, itemIndex) => (
+                        {order.items?.map((item, idx) => (
                           <div
-                            key={`${item.name}-${itemIndex}`}
-                            className="bg-white rounded-2xl p-4 flex items-center justify-between shadow-sm"
+                            key={`${item.name}-${idx}`}
+                            className="bg-white rounded-2xl p-4 flex justify-between shadow-sm"
                           >
                             <div>
                               <p className="text-black font-semibold capitalize">
                                 {item.name}
                               </p>
-
                               <p className="text-gray-600 text-sm">
                                 Quantity: {item.quantity}
                               </p>
@@ -242,7 +213,6 @@ export default function OrdersPage() {
                               <p className="text-black font-bold">
                                 ₦{item.amount}
                               </p>
-
                               <p className="text-gray-500 text-sm">
                                 ₦{item.price} each
                               </p>
@@ -280,7 +250,7 @@ export default function OrdersPage() {
                 Previous
               </button>
 
-              <div className="bg-white px-5 py-3 rounded-2xl text-black font-bold shadow">
+              <div className="bg-white px-5 py-3 rounded-2xl text-black font-bold shadow text-xs sm:text-sm md:text-base">
                 Page {page} of {totalPages}
               </div>
 
