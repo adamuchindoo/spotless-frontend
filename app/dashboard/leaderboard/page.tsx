@@ -78,7 +78,7 @@ export default function LeaderboardPage() {
               <tr>
                 <th className="text-left p-4">Position</th>
 
-                <th className="text-left p-4">Full Name</th>
+                <th className="text-left p-4">Name</th>
 
                 <th className="text-left p-4">Points</th>
               </tr>
