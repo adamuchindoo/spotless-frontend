@@ -1,13 +1,14 @@
 "use client";
 
+import { Suspense, useState } from "react";
+
 import { changePassword } from "@/services/auth";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 import toast from "react-hot-toast";
 
 import { FaLock, FaKey, FaArrowRight } from "react-icons/fa";
 
-export default function ChangePasswordPage() {
+function ChangePasswordForm() {
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -240,5 +241,13 @@ export default function ChangePasswordPage() {
         </p>
       </div>
     </main>
+  );
+}
+
+export default function ChangePasswordPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ChangePasswordForm />
+    </Suspense>
   );
 }
