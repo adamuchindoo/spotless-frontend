@@ -95,3 +95,20 @@ export const getGarments = async (page: number = 1, pageSize: number = 10) => {
     method: "GET",
   });
 };
+
+export const resetPassword = async (email: string) => {
+  return api(`/api/auth/reset-password/${email}`, {
+    method: "GET",
+  });
+};
+
+export const changePassword = async (data: {
+  otp: number;
+  password: string;
+  confirm_password: string;
+}) => {
+  return api("/api/auth/change_password", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+};

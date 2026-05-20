@@ -121,7 +121,12 @@ export default function LoginPage() {
             )}
           </button>
         </form>
-
+        <p
+          onClick={() => router.push("/reset-password")}
+          className="text-sm text-center text-gray-600 mt-4 cursor-pointer hover:underline"
+        >
+          Forgot Password?
+        </p>
         {/* REGISTER */}
         <p className="text-center text-gray-600 mt-6">
           Don&apos;t have an account?{" "}
