@@ -57,7 +57,12 @@ export default function DashboardLayout({
             >
               Orders
             </Link>
-
+            <Link
+              href="/dashboard/price"
+              className="hover:text-yellow-600 transition"
+            >
+              Price
+            </Link>
             <Link
               href="/dashboard/withdraw"
               className="hover:text-yellow-600 transition"

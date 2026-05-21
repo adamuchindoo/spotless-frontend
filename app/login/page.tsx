@@ -26,31 +26,33 @@ export default function LoginPage() {
     });
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      // ✅ LOGIN API
-      const response = await loginUser({
-        email: formData.email,
-        password: formData.password,
-      });
+    const response = await loginUser({
+      email: formData.email,
+      password: formData.password,
+    });
 
-      // ✅ SUCCESS TOAST
-      toast.success("Login successful");
+    toast.success("Login successful");
 
-      // ✅ REDIRECT
-      router.push("/dashboard");
-    } catch (error: any) {
-      console.log("err", error);
+    router.push("/dashboard");
+  } catch (error: any) {
+    console.log("LOGIN ERROR:", error);
 
-      toast.error(error.message || "Login failed");
-    } finally {
-      setLoading(false);
-    }
-  };
+    const message =
+      error?.response?.data?.message ||
+      error?.message ||
+      "Invalid email or password";
+
+    toast.error(message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <main className="min-h-screen bg-yellow-400 flex items-center justify-center px-4">

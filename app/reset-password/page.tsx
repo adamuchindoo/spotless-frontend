@@ -28,8 +28,13 @@ export default function ResetPasswordPage() {
       router.push(`/change-password?email=${email}`);
     } catch (error: any) {
       console.log(error);
+const errorMessage =
+    error?.response?.data?.detail ||
+    error?.detail ||
+    error?.message ||
+    "Failed to send OTP";
 
-      toast.error(error.message || "Failed to send OTP");
+  toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
