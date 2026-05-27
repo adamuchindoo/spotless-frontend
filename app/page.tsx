@@ -41,7 +41,7 @@ export default function Home() {
             </a>
 
             <a href="#pricing" className="hover:text-yellow-500">
-              Pricing
+              Pricelist
             </a>
 
             <a href="/leaderboard" className="hover:text-yellow-500">
@@ -76,7 +76,7 @@ export default function Home() {
           </a>
 
           <a href="#pricing" className="block">
-            Pricing
+            Pricelist
           </a>
 
           <a href="#contact" className="block">

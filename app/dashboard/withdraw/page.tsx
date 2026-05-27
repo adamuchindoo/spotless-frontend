@@ -88,7 +88,8 @@ export default function WithdrawPage() {
 
       fetchWithdrawals(page);
     } catch (err: any) {
-      toast.error(err.message);
+      console.log(err);
+      toast.error(err.message || err.detail || "Failed to request withdrawal");
     } finally {
       setLoading(false);
     }

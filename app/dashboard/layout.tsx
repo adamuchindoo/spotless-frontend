@@ -41,7 +41,7 @@ export default function DashboardLayout({
 
           {/* DESKTOP MENU */}
           <div className="hidden md:flex gap-6 text-black font-medium items-center">
-            <Link href="/" className="hover:text-yellow-600 transition">
+            <Link href="/dashboard" className="hover:text-yellow-600 transition">
               Home
             </Link>
 
@@ -62,7 +62,7 @@ export default function DashboardLayout({
               href="/dashboard/price"
               className="hover:text-yellow-600 transition"
             >
-              Price
+              Pricelist
             </Link>
             <Link
               href="/dashboard/withdraw"

@@ -141,17 +141,20 @@ export default function OrdersPage() {
                         ₦{order.total_cost}
                       </div>
 
-                      <div className="bg-gray-200 text-black px-4 py-2 rounded-2xl text-sm capitalize">
-                        {order.stage}
-                      </div>
+                     <div className="bg-gray-200 text-black px-4 py-2 rounded-2xl text-sm">
+  <span className="font-semibold">Stage:</span>{" "}
+  <span className="capitalize">{order.stage}</span>
+</div>
 
-                      <div className="bg-black text-white px-4 py-2 rounded-2xl text-sm capitalize">
-                        {order.payment_status}
-                      </div>
+<div className="bg-black text-white px-4 py-2 rounded-2xl text-sm">
+  <span className="font-semibold">Payment:</span>{" "}
+  <span className="capitalize">{order.payment_status}</span>
+</div>
 
-                      <div className="bg-red-100 text-red-700 px-4 py-2 rounded-2xl text-sm capitalize">
-                        {order.status}
-                      </div>
+<div className="bg-red-100 text-red-700 px-4 py-2 rounded-2xl text-sm">
+  <span className="font-semibold">Status:</span>{" "}
+  <span className="capitalize">{order.status}</span>
+</div>
 
                       {/* EXPAND ICON */}
                       <ChevronDown
@@ -228,7 +231,7 @@ export default function OrdersPage() {
                         onClick={() => updateOrder(order.order_id)}
                         className="mt-6 bg-black text-white px-6 py-3 rounded-2xl hover:opacity-90 transition font-semibold"
                       >
-                        Update Order
+                        Confirm Order
                       </button>
                     )}
                   </div>
