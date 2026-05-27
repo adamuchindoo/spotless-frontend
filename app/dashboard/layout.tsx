@@ -86,7 +86,7 @@ export default function DashboardLayout({
           <div className="md:hidden px-4 pb-4">
             <div className="bg-yellow-100 rounded-2xl p-4 flex flex-col gap-4">
               <Link
-                href="/"
+                href="/dashboard"
                 onClick={() => setOpenMenu(false)}
                 className="flex items-center gap-3 text-black font-medium hover:bg-white p-3 rounded-xl transition"
               >
@@ -117,7 +117,7 @@ export default function DashboardLayout({
                 className="flex items-center gap-3 text-black font-medium hover:bg-white p-3 rounded-xl transition"
               >
                 <FaMoneyCheck />
-                Price
+                Pricelist
               </Link>
               <Link
                 href="/dashboard/withdraw"

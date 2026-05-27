@@ -127,7 +127,7 @@ export default function Home() {
           <h2 className="text-3xl font-bold mb-4">🎁 Referral Bonus</h2>
 
           <p className="text-lg mb-6">
-            Earn 1% commission on every laundry order your referrals make.
+            Earn 10% commission on every laundry order your referrals make.
           </p>
 
           <div className="bg-white p-6 rounded-2xl shadow">
