@@ -14,6 +14,9 @@ import {
   FaGift,
 } from "react-icons/fa";
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_REGEX = /^\d{11}$/;
+
 export default function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -30,7 +33,17 @@ export default function RegisterForm() {
     referral_code: "",
   });
 
-  /* ================= PASSWORD VALIDATION ================= */
+  const [touched, setTouched] = useState({
+    email: false,
+    phone_number: false,
+    confirm_password: false,
+  });
+
+  /* ================= VALIDATION ================= */
+
+  const emailValid = EMAIL_REGEX.test(formData.email);
+  const phoneValid = PHONE_REGEX.test(formData.phone_number);
+  const passwordsMatch = formData.password === formData.confirm_password;
 
   const passwordRules = {
     minLength: formData.password.length >= 8,
@@ -43,6 +56,15 @@ export default function RegisterForm() {
   const isPasswordValid = Object.values(passwordRules).every(Boolean);
 
   const strength = Object.values(passwordRules).filter(Boolean).length;
+
+  const isFormValid =
+    formData.full_name.trim().length > 0 &&
+    emailValid &&
+    phoneValid &&
+    formData.address.trim().length > 0 &&
+    isPasswordValid &&
+    passwordsMatch &&
+    formData.confirm_password.length > 0;
 
   /* ================= AUTO FILL REF ================= */
 
@@ -60,10 +82,12 @@ export default function RegisterForm() {
   /* ================= HANDLE INPUT ================= */
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name } = e.target;
+    if (name in touched) setTouched({ ...touched, [name]: true });
   };
 
   /* ================= SUBMIT ================= */
@@ -140,33 +164,46 @@ export default function RegisterForm() {
           </div>
 
           {/* EMAIL */}
-          <div className="relative">
-            <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
-
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full border border-gray-300 bg-white text-black placeholder:text-gray-500 p-3 pl-12 rounded-2xl outline-none focus:ring-2 focus:ring-black"
-              required
-            />
+          <div>
+            <div className="relative">
+              <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+              <input
+                type="text"
+                name="email"
+                placeholder="Email Address"
+                value={formData.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={`w-full border bg-white text-black placeholder:text-gray-500 p-3 pl-12 rounded-2xl outline-none focus:ring-2 focus:ring-black ${
+                  touched.email && !emailValid ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+            </div>
+            {touched.email && !emailValid && (
+              <p className="text-red-500 text-xs mt-1 ml-1">Enter a valid email address.</p>
+            )}
           </div>
 
           {/* PHONE */}
-          <div className="relative">
-            <FaPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
-
-            <input
-              type="text"
-              name="phone_number"
-              placeholder="Phone Number"
-              value={formData.phone_number}
-              onChange={handleChange}
-              className="w-full border border-gray-300 bg-white text-black placeholder:text-gray-500 p-3 pl-12 rounded-2xl outline-none focus:ring-2 focus:ring-black"
-              required
-            />
+          <div>
+            <div className="relative">
+              <FaPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+              <input
+                type="tel"
+                name="phone_number"
+                placeholder="Phone Number (11 digits)"
+                value={formData.phone_number}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                maxLength={11}
+                className={`w-full border bg-white text-black placeholder:text-gray-500 p-3 pl-12 rounded-2xl outline-none focus:ring-2 focus:ring-black ${
+                  touched.phone_number && !phoneValid ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+            </div>
+            {touched.phone_number && !phoneValid && (
+              <p className="text-red-500 text-xs mt-1 ml-1">Phone number must be exactly 11 digits.</p>
+            )}
           </div>
 
           {/* ADDRESS */}
@@ -271,25 +308,31 @@ export default function RegisterForm() {
           </div>
 
           {/* CONFIRM PASSWORD */}
-          <div className="relative">
-            <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
-
-            <input
-              type="password"
-              name="confirm_password"
-              placeholder="Confirm Password"
-              value={formData.confirm_password}
-              onChange={handleChange}
-              className="w-full border border-gray-300 bg-white text-black placeholder:text-gray-500 p-3 pl-12 rounded-2xl outline-none focus:ring-2 focus:ring-black"
-              required
-            />
+          <div>
+            <div className="relative">
+              <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+              <input
+                type="password"
+                name="confirm_password"
+                placeholder="Confirm Password"
+                value={formData.confirm_password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={`w-full border bg-white text-black placeholder:text-gray-500 p-3 pl-12 rounded-2xl outline-none focus:ring-2 focus:ring-black ${
+                  touched.confirm_password && !passwordsMatch ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+            </div>
+            {touched.confirm_password && !passwordsMatch && (
+              <p className="text-red-500 text-xs mt-1 ml-1">Passwords do not match.</p>
+            )}
           </div>
 
           {/* BUTTON */}
           <button
             type="submit"
-            disabled={loading}
-            className="w-full bg-black text-white py-3 rounded-2xl font-semibold hover:opacity-90 transition disabled:opacity-50"
+            disabled={loading || !isFormValid}
+            className="w-full bg-black text-white py-3 rounded-2xl font-semibold hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Creating Account..." : "Create Account"}
           </button>
