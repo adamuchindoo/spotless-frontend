@@ -120,7 +120,7 @@ export default function RegisterForm() {
           toast.error(err.msg);
         });
       } else {
-        toast.error(error?.message || "Registration failed");
+        toast.error(error?.message || error?.detail || "Registration failed");
       }
     } finally {
       setLoading(false);
